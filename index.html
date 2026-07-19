@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <header class="topbar">
+  <div class="top-logo">MASTERMIND AJADESHWAR DIGITAL</div>
+
+  <div class="top-buttons">
+    <button id="wallpaperBtn">🎨 Change Wallpaper</button>
+    <button id="signinBtn">Sign In</button>
+  </div>
+</header>
+
+<main id="homePage" class="home-page">
+
+  <h1 class="mastermind">Mastermind</h1>
+  <div class="ajadeshwar">Ajadeshwar</div>
+
+  <div class="search-wrap">
+    <input id="searchBox" autocomplete="off" placeholder="Enter your search...">
+    <div id="suggestions"></div>
+  </div>
+
+  <div class="quick-buttons">
+    <button data-search="YouTube">YouTube</button>
+    <button data-search="Instagram">Instagram</button>
+    <button data-search="Facebook">Facebook</button>
+    <button data-search="ChatGPT">ChatGPT</button>
+  </div>
+
+</main>
+
+<section id="resultsPage" class="results-page">
+
+  <button id="backBtn" class="back-btn">← Back</button>
+
+  <div class="result-search">
+    <input id="resultSearch" placeholder="Search again...">
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <h3 id="resultTitle"></h3>
+
+  <div id="results"></div>
+
+  <div class="history">
+    <h3>🕘 Search History</h3>
+    <div id="historyList"></div>
+  </div>
+
+</section>
+
+
+<div id="wallpaperModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2>Choose Wallpaper 🌍</h2>
+
+    <div class="wallpaper-grid">
+      <button data-wall="earth">🌍 Earth</button>
+      <button data-wall="nature">🌿 Nature</button>
+      <button data-wall="space">🌌 Space</button>
+      <button data-wall="city">🌆 City</button>
+      <button data-wall="ocean">🌊 Ocean</button>
+      <button data-wall="default">⬜ Default</button>
+    </div>
+
+    <button id="closeWallpaper" class="close-btn">Close</button>
+
+  </div>
+
+</div>
+
+
+<div id="loginModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2>Mastermind Sign In 🔐</h2>
+
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+
+    <button id="loginBtn" class="login-btn">
+      Sign In
+    </button>
+
+    <button id="closeLogin" class="close-btn">
+      Close
+    </button>
+
+  </div>
+
+</div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
