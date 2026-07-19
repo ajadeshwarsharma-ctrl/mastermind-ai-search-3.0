@@ -1,20 +1,17 @@
 {
-  "background_color": "#f25530",
-  "dir": "ltr",
+  "short_name": "Mastermind X",
+  "name": "Mastermind X Search Engine",
+  "icons": [
+    {
+      "src": "Copilot_20260719_110100 (1).png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#ffffff",
   "display": "standalone",
-  "name": "MASTERMIND X",
-  "orientation": "any",
-  "scope": "/",
-  "short_name": "MMX",
-  "start_url": "https://mastermind-ai-search-3-0.onrender.com/",
-  "theme_color": "#f31919",
-  "id": "mastermind-x",
-  "description": "MASTERMIND X is a fast and intelligent AI-powered search engine that helps users find information quickly and easily.",
-  "lang": "en",
-  "categories": [
-    "network",
-    "networking",
-    "news",
-    "productivity"
-  ]
+  "orientation": "portrait",
+  "theme_color": "#000000"
 }
