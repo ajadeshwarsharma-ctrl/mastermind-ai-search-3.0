@@ -39,6 +39,33 @@ const AJADESH_INDEX = [
 
 console.log("🔥 AJADESH INDEX LOADED");
 console.log("📚 TOTAL DATA:", AJADESH_INDEX.length);
+/* =====================================================
+   AJADESH LOCAL SEARCH — STEP 2
+===================================================== */
+
+function searchAjadeshIndex(query) {
+
+    const cleanQuery = query.toLowerCase().trim();
+
+    if (!cleanQuery) {
+        return [];
+    }
+
+    const results = AJADESH_INDEX.filter(item => {
+
+        const title = item.title.toLowerCase();
+        const description = item.description.toLowerCase();
+
+        return title.includes(cleanQuery) ||
+               description.includes(cleanQuery);
+
+    });
+
+    console.log("🔎 AJADESH SEARCH:", query);
+    console.log("📚 RESULTS FOUND:", results.length);
+
+    return results;
+}
 "use strict";
 
 /* =========================================================
