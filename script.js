@@ -5,189 +5,36 @@
 
 const AJADESH_INDEX = [
 
-const AJADESH_INDEX = [
-
     {
-        title: "Google",
-        description: "Google दुनिया का लोकप्रिय search engine है.",
-        url: "https://www.google.com"
-    },
-
-    {
-        title: "Bing",
-        description: "Bing Microsoft का search engine है.",
-        url: "https://www.bing.com"
+        title: "GTA Vice City",
+        description: "GTA Vice City ek popular open-world action game hai.",
+        url: "https://www.rockstargames.com/games/vice-city"
     },
 
     {
         title: "YouTube",
-        description: "YouTube video sharing platform है.",
+        description: "YouTube ek video sharing platform hai.",
         url: "https://www.youtube.com"
     },
 
     {
         title: "Instagram",
-        description: "Instagram photo और video sharing platform है.",
+        description: "Instagram photo aur video sharing platform hai.",
         url: "https://www.instagram.com"
     },
 
     {
-        title: "Facebook",
-        description: "Facebook social networking platform है.",
-        url: "https://www.facebook.com"
+        title: "Google",
+        description: "Google ek web search engine hai.",
+        url: "https://www.google.com"
     },
 
     {
-        title: "ChatGPT",
-        description: "ChatGPT AI chatbot है.",
-        url: "https://chatgpt.com"
-    },
-
-    {
-        title: "Gemini",
-        description: "Gemini Google का AI assistant है.",
-        url: "https://gemini.google.com"
-    },
-
-    {
-        title: "Wikipedia",
-        description: "Wikipedia free online encyclopedia है.",
-        url: "https://www.wikipedia.org"
-    },
-
-    {
-        title: "GitHub",
-        description: "GitHub coding और software development platform है.",
-        url: "https://github.com"
-    },
-
-    {
-        title: "Amazon",
-        description: "Amazon online shopping website है.",
-        url: "https://www.amazon.com"
-    },
-
-    {
-        title: "Flipkart",
-        description: "Flipkart India का online shopping platform है.",
-        url: "https://www.flipkart.com"
-    },
-
-    {
-        title: "Netflix",
-        description: "Netflix movie और web series streaming platform है.",
-        url: "https://www.netflix.com"
-    },
-
-    {
-        title: "Spotify",
-        description: "Spotify music streaming platform है.",
-        url: "https://www.spotify.com"
-    },
-
-    {
-        title: "Reddit",
-        description: "Reddit online community और discussion platform है.",
-        url: "https://www.reddit.com"
-    },
-
-    {
-        title: "Discord",
-        description: "Discord community और chat platform है.",
-        url: "https://discord.com"
-    },
-
-    {
-        title: "Telegram",
-        description: "Telegram messaging platform है.",
-        url: "https://telegram.org"
-    },
-
-    {
-        title: "WhatsApp",
-        description: "WhatsApp messaging और calling platform है.",
-        url: "https://www.whatsapp.com"
-    },
-
-    {
-        title: "X",
-        description: "X social media और microblogging platform है.",
-        url: "https://x.com"
-    },
-
-    {
-        title: "LinkedIn",
-        description: "LinkedIn professional networking platform है.",
-        url: "https://www.linkedin.com"
-    },
-
-    {
-        title: "Canva",
-        description: "Canva online graphic design platform है.",
-        url: "https://www.canva.com"
-    },
-
-    {
-        title: "Microsoft",
-        description: "Microsoft technology और software company है.",
-        url: "https://www.microsoft.com"
-    },
-
-    {
-        title: "Apple",
-        description: "Apple technology company है.",
-        url: "https://www.apple.com"
-    },
-
-    {
-        title: "Vivo",
-        description: "Vivo smartphone और technology brand है.",
-        url: "https://www.vivo.com"
-    },
-
-    {
-        title: "Samsung",
-        description: "Samsung electronics और technology company है.",
-        url: "https://www.samsung.com"
-    },
-
-    {
-        title: "Xiaomi",
-        description: "Xiaomi smartphone और electronics brand है.",
-        url: "https://www.mi.com"
-    },
-
-    {
-        title: "GTA Vice City",
-        description: "GTA Vice City open world action game है.",
-        url: "https://www.rockstargames.com/games/vice-city"
-    },
-
-    {
-        title: "GTA San Andreas",
-        description: "GTA San Andreas open world action game है.",
-        url: "https://www.rockstargames.com/games/sanandreas"
-    },
-
-    {
-        title: "Roblox",
-        description: "Roblox online gaming platform है.",
-        url: "https://www.roblox.com"
-    },
-
-    {
-        title: "Steam",
-        description: "Steam PC gaming platform है.",
-        url: "https://store.steampowered.com"
-    },
-
-    {
-        title: "Twitch",
-        description: "Twitch live streaming platform है.",
-        url: "https://www.twitch.tv"
+        title: "Ajadeshwar Search Engine",
+        description: "Ajadeshwar ka apna search engine project.",
+        url: "https://mastermind-search.onrender.com/"
     }
 
-];
 ];
 
 console.log("🔥 AJADESH INDEX LOADED");
