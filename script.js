@@ -3243,7 +3243,36 @@ function showNoResults(query) {
 
 async function startSearch(query) {
     const ajadeshResults = searchAjadeshIndex(query);
+/* =====================================================
+AJADESH DATA SEARCH CONNECT — STEP 14
+===================================================== */
 
+const dataResults = searchAjadeshData(query);
+
+if (dataResults.length > 0) {
+
+    console.log(
+        "🔥 AJADESH DATA RESULT MIL GAYA:",
+        dataResults.length
+    );
+
+    displayResults(
+        dataResults.map(item => ({
+
+            title: item.title,
+
+            description:
+                item.text ||
+                item.description ||
+                "Ajadeshwar Data Result",
+
+            url: item.url
+
+        }))
+    );
+
+    return;
+}
     if (ajadeshResults.length > 0) {
 
         console.log("😈 AJADESH RESULT MIL GAYA BHAI");
