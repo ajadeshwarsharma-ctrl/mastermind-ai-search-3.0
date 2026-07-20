@@ -23,7 +23,7 @@ const pageData = {
     url: url,
 
     textLength: html.length
-
+    html: html
 };
 
 fs.writeFileSync(
