@@ -1,3 +1,4 @@
+import fs from "fs";
 const START_URL = "https://example.com";
 
 async function ajadeshBot(url) {
