@@ -1,3 +1,44 @@
+/* =====================================================
+   AJADESH INDEX — STEP 1
+   NURSERY CLASS 🤖
+===================================================== */
+
+const AJADESH_INDEX = [
+
+    {
+        title: "GTA Vice City",
+        description: "GTA Vice City ek popular open-world action game hai.",
+        url: "https://www.rockstargames.com/games/vice-city"
+    },
+
+    {
+        title: "YouTube",
+        description: "YouTube ek video sharing platform hai.",
+        url: "https://www.youtube.com"
+    },
+
+    {
+        title: "Instagram",
+        description: "Instagram photo aur video sharing platform hai.",
+        url: "https://www.instagram.com"
+    },
+
+    {
+        title: "Google",
+        description: "Google ek web search engine hai.",
+        url: "https://www.google.com"
+    },
+
+    {
+        title: "Ajadeshwar Search Engine",
+        description: "Ajadeshwar ka apna search engine project.",
+        url: "https://mastermind-search.onrender.com/"
+    }
+
+];
+
+console.log("🔥 AJADESH INDEX LOADED");
+console.log("📚 TOTAL DATA:", AJADESH_INDEX.length);
 "use strict";
 
 /* =========================================================
