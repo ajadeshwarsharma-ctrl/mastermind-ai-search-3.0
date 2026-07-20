@@ -1,60 +1,163 @@
-import fs from "fs";
-const START_URL = "https://example.com";
+const fs = require("fs");
+
+const START_URLS = [
+    "https://example.com"
+];
+
+const MAX_PAGES = 25;
+
+const visited = new Set();
+
+const pages = [];
+
+const queue = [...START_URLS];
+
+function cleanText(html) {
+
+    return html
+        .replace(/<script[\s\S]*?<\/script>/gi, "")
+        .replace(/<style[\s\S]*?<\/style>/gi, "")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+}
+
+function extractTitle(html) {
+
+    const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+
+    if (!match) {
+        return "Untitled Page";
+    }
+
+    return match[1]
+        .replace(/\s+/g, " ")
+        .trim();
+
+}
+
+function extractLinks(html, currentUrl) {
+
+    const links = [];
+
+    const linkRegex = /href=["']([^"']+)["']/gi;
+
+    let match;
+
+    while ((match = linkRegex.exec(html)) !== null) {
+
+        try {
+
+            const absoluteUrl = new URL(
+                match[1],
+                currentUrl
+            ).href;
+
+            if (
+                absoluteUrl.startsWith("http://") ||
+                absoluteUrl.startsWith("https://")
+            ) {
+
+                const cleanUrl = absoluteUrl.split("#")[0];
+
+                if (!links.includes(cleanUrl)) {
+                    links.push(cleanUrl);
+                }
+
+            }
+
+        } catch {
+
+            // Invalid link skip
+
+        }
+
+    }
+
+    return links;
+
+}
 
 async function ajadeshBot(url) {
 
-    console.log("🤖 AJADESH BOT STARTED");
+    if (visited.has(url)) {
+        return;
+    }
+
+    if (visited.size >= MAX_PAGES) {
+        return;
+    }
+
+    visited.add(url);
+
+    console.log("");
+    console.log("🤖 AJADESH BOT READING:");
+    console.log(url);
 
     try {
 
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                "User-Agent": "AjadeshBot/1.0"
+            }
+        });
+
+        if (!response.ok) {
+
+            console.log("❌ PAGE ERROR:", response.status);
+
+            return;
+
+        }
 
         const html = await response.text();
 
-        console.log("🌐 WEBSITE OPENED");
+        const title = extractTitle(html);
 
-        console.log("📄 TOTAL DATA:", html.length);
+        const text = cleanText(html);
 
-        console.log("🔥 AJADESH BOT READ WEBSITE");
-        const links = [];
+        const links = extractLinks(html, url);
 
-const linkRegex = /href="(https?:\/\/[^"]+)"/g;
+        const pageData = {
 
-let match;
+            title: title,
 
-while ((match = linkRegex.exec(html)) !== null) {
+            url: url,
 
-    links.push(match[1]);
+            text: text,
 
-}
+            links: links,
 
-console.log("🔗 LINKS FOUND:", links.length);
-if (links.length > 0) {
+            crawledAt: new Date().toISOString()
 
-    const nextUrl = links[0];
+        };
 
-    console.log("➡️ AJADESH BOT NEXT WEBSITE PAR JA RAHA HAI:");
+        pages.push(pageData);
 
-    console.log(nextUrl);
+        console.log("📄 TITLE:", title);
 
-}
-console.log(links);
-const pageData = {
+        console.log("📝 TEXT LENGTH:", text.length);
 
-    title: "Example Website",
+        console.log("🔗 LINKS FOUND:", links.length);
 
-    url: url,
+        fs.writeFileSync(
+            "data.json",
+            JSON.stringify(pages, null, 2)
+        );
 
-    textLength: html.length
-    html: html
-};
+        console.log("💾 DATA SAVED TO AJADESH DATABASE");
 
-fs.writeFileSync(
-    "./data.json",
-    JSON.stringify(pageData, null, 2)
-);
+        for (const link of links) {
 
-console.log("💾 DATA AJADESH DATABASE ME SAVE HO GAYA");
+            if (visited.size >= MAX_PAGES) {
+                break;
+            }
+
+            await ajadeshBot(link);
+
+        }
+
     } catch (error) {
 
         console.log("💀 BOT ERROR:", error.message);
@@ -63,15 +166,25 @@ console.log("💾 DATA AJADESH DATABASE ME SAVE HO GAYA");
 
 }
 
-ajadeshBot(START_URL);
-if (links.length > 0) {
+async function startAjadeshEngine() {
 
-    const nextUrl = links[0];
+    console.log("");
+    console.log("🔥 AJADESH SEARCH ENGINE CRAWLER STARTED");
+    console.log("🤖 AJADESH BOT ONLINE");
+    console.log("");
 
-    console.log("➡️ AJADESH BOT NEXT WEBSITE PAR JA RAHA HAI:");
+    for (const url of queue) {
 
-    console.log(nextUrl);
+        await ajadeshBot(url);
 
-    await ajadeshBot(nextUrl);
+    }
+
+    console.log("");
+    console.log("✅ AJADESH CRAWLER FINISHED");
+    console.log("📚 TOTAL PAGES:", pages.length);
+    console.log("💾 AJADESH DATABASE UPDATED");
+    console.log("");
 
 }
+
+startAjadeshEngine();
