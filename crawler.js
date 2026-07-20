@@ -56,3 +56,14 @@ console.log("💾 DATA AJADESH DATABASE ME SAVE HO GAYA");
 }
 
 ajadeshBot(START_URL);
+if (links.length > 0) {
+
+    const nextUrl = links[0];
+
+    console.log("➡️ AJADESH BOT NEXT WEBSITE PAR JA RAHA HAI:");
+
+    console.log(nextUrl);
+
+    await ajadeshBot(nextUrl);
+
+}
