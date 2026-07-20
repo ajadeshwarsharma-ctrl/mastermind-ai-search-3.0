@@ -3242,6 +3242,7 @@ function showNoResults(query) {
 ========================================================= */
 
 async function startSearch(query) {
+   MASTER_MIND.isSearching = false;
     const ajadeshResults = searchAjadeshIndex(query);
 /* =====================================================
 AJADESH DATA SEARCH CONNECT — STEP 14
