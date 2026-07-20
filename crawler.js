@@ -29,7 +29,15 @@ while ((match = linkRegex.exec(html)) !== null) {
 }
 
 console.log("🔗 LINKS FOUND:", links.length);
+if (links.length > 0) {
 
+    const nextUrl = links[0];
+
+    console.log("➡️ AJADESH BOT NEXT WEBSITE PAR JA RAHA HAI:");
+
+    console.log(nextUrl);
+
+}
 console.log(links);
 const pageData = {
 
