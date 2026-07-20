@@ -67,7 +67,87 @@ function searchAjadeshIndex(query) {
     return results;
 }
 "use strict";
+/* =====================================================
+   AJADESH DATA CONNECT — STEP 14
+===================================================== */
 
+let AJADESH_DATA = [];
+
+async function loadAjadeshData() {
+
+    try {
+
+        const response = await fetch("./data.json", {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+
+            console.log("⚠️ AJADESH DATA NOT FOUND");
+
+            return;
+
+        }
+
+        AJADESH_DATA = await response.json();
+
+        console.log(
+            "🤖 AJADESH DATA LOADED:",
+            AJADESH_DATA.length
+        );
+
+    } catch (error) {
+
+        console.log(
+            "💀 AJADESH DATA LOAD ERROR:",
+            error
+        );
+
+    }
+
+}
+
+function searchAjadeshData(query) {
+
+    const cleanQuery = query
+        .toLowerCase()
+        .trim();
+
+    if (!cleanQuery) {
+
+        return [];
+
+    }
+
+    return AJADESH_DATA
+        .filter(page => {
+
+            const title = String(
+                page.title || ""
+            ).toLowerCase();
+
+            const text = String(
+                page.text || ""
+            ).toLowerCase();
+
+            const url = String(
+                page.url || ""
+            ).toLowerCase();
+
+            return (
+
+                title.includes(cleanQuery) ||
+                text.includes(cleanQuery) ||
+                url.includes(cleanQuery)
+
+            );
+
+        })
+        .slice(0, 30);
+
+}
+
+loadAjadeshData();
 /* =========================================================
    MASTERMIND SEARCH ENGINE
    ULTIMATE SMART SEARCH ENGINE
