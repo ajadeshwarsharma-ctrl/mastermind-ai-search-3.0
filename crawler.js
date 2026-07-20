@@ -16,6 +16,21 @@ async function ajadeshBot(url) {
         console.log("📄 TOTAL DATA:", html.length);
 
         console.log("🔥 AJADESH BOT READ WEBSITE");
+        const links = [];
+
+const linkRegex = /href="(https?:\/\/[^"]+)"/g;
+
+let match;
+
+while ((match = linkRegex.exec(html)) !== null) {
+
+    links.push(match[1]);
+
+}
+
+console.log("🔗 LINKS FOUND:", links.length);
+
+console.log(links);
 const pageData = {
 
     title: "Example Website",
