@@ -4143,3 +4143,56 @@ window.MASTERMIND = {
   version: MASTER_MIND.version
 
 };
+/* =====================================================
+AJADESH DATA SEARCH CONNECT — STEP 14 FIX
+===================================================== */
+
+function displayResults(items) {
+
+    if (!results) return;
+
+    results.innerHTML = "";
+
+    if (!items || !items.length) {
+
+        showNoResults(
+            MASTER_MIND.currentQuery
+        );
+
+        return;
+    }
+
+    const heading =
+        document.createElement("div");
+
+    heading.className = "result-card";
+
+    heading.innerHTML = `
+        <h2>🤖 Ajadeshwar Index Results</h2>
+        <p>
+            Ajadeshwar Data se result mila 🔥
+        </p>
+    `;
+
+    results.appendChild(heading);
+
+    items.forEach(item => {
+
+        addCard({
+
+            title: item.title || "Untitled",
+
+            url: item.url || "#",
+
+            description:
+                item.description ||
+                item.text ||
+                "Ajadeshwar Search Result",
+
+            badge: "AJADESH DATA"
+
+        });
+
+    });
+
+}
