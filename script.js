@@ -3242,6 +3242,11 @@ function showNoResults(query) {
 ========================================================= */
 
 async function startSearch(query) {
+       query = String(query || "").trim();
+
+    if (!query) {
+        return;
+    }
    MASTER_MIND.isSearching = false;
     const ajadeshResults = searchAjadeshIndex(query);
 /* =====================================================
