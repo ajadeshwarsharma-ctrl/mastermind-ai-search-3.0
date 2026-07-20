@@ -3162,7 +3162,22 @@ function showNoResults(query) {
 ========================================================= */
 
 async function startSearch(query) {
+    const ajadeshResults = searchAjadeshIndex(query);
 
+    if (ajadeshResults.length > 0) {
+
+        console.log("😈 AJADESH RESULT MIL GAYA BHAI");
+
+        displayResults(
+            ajadeshResults.map(item => ({
+                title: item.title,
+                description: item.description,
+                url: item.url
+            }))
+        );
+
+        return;
+    }
   if (
 
     MASTER_MIND.isSearching
