@@ -871,9 +871,18 @@ function showSuggestions(value) {
         return;
     }
 
-    const local = suggestionDatabase.filter(
-        item => normalizeText(item).includes(query)
-    );
+   const local = [
+    ...suggestionDatabase,
+
+    ...AJADESH_INDEX.map(item => item.title),
+
+    ...AJADESH_INDEX.map(item => item.description)
+]
+.filter(Boolean)
+.filter(item =>
+    normalizeText(item).includes(query)
+)
+.slice(0,10);
 
     renderSuggestions(local);
 
