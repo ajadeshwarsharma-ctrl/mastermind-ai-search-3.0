@@ -1,0 +1,15 @@
+{
+  "name": "ajadesh-search-engine",
+  "version": "2.0.0",
+  "description": "Ajadesh Search Engine Production Crawler",
+  "main": "crawler.js",
+  "type": "commonjs",
+  "scripts": {
+    "crawl": "node crawler.js",
+    "index": "node indexer.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0"
+  }
+}
