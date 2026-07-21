@@ -16,7 +16,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
+      - name: Install Dependencies
+        run: npm install
       - name: Run Ajadesh Crawler
         run: node crawler.js
       - name: Save Ajadesh Data
