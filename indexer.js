@@ -38,7 +38,12 @@ for (const page of pages) {
         url: page.url || "",
 
         text: page.text || ""
-
+keywords: (page.text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, "")
+    .split(/\s+/)
+    .filter(word => word.length > 2)
+    .slice(0, 100)
     });
 
 }
