@@ -2424,11 +2424,11 @@ if (signinBtn) {
                 ${user.displayName || "User"}
             `;
 
-            signinBtn.onclick = () => {
+          signinBtn.onclick = () => {
 
-                auth.signOut();
+    console.log("Profile Open");
 
-            };
+};
 
         } else {
 
