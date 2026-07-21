@@ -1831,23 +1831,13 @@ if (results) {
 
     results.innerHTML = `
 
-    <div class="result-card ai-overview">
+<div class="result-card ai-overview">
 
-        <h2>🤖 Mastermind AI Overview</h2>
+    ${generateAIOverview(query)}
 
-        <p>
-        AI answer system jaldi hi connect hoga 🔥
-        </p>
+</div>
 
-        <p>
-        Abhi Mastermind search results collect kar raha hai 😎
-        </p>
-
-    </div>
-
-    `;
-
-}
+`;
     let found = false;
 
     try {
