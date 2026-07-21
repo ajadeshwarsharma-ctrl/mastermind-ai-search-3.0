@@ -27,3 +27,23 @@ catch (error) {
     );
 
 }
+const searchIndex = [];
+
+for (const page of pages) {
+
+    searchIndex.push({
+
+        title: page.title || "",
+
+        url: page.url || "",
+
+        text: page.text || ""
+
+    });
+
+}
+
+console.log(
+    "📚 Search Index Ready:",
+    searchIndex.length
+);
