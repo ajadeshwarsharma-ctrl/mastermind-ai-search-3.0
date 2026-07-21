@@ -2426,7 +2426,23 @@ if (signinBtn) {
     console.log("Profile Open");
 
 };
+const mainSignBtn = document.getElementById("signinBtn");
 
+if (mainSignBtn) {
+
+    mainSignBtn.onclick = function () {
+
+        const modal = document.getElementById("loginModal");
+
+        if (modal) {
+
+            modal.style.display = "flex";
+
+        }
+
+    };
+
+}
         } else {
 
             signinBtn.innerHTML = "Sign In";
