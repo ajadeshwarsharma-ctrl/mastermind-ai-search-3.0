@@ -47,3 +47,24 @@ console.log(
     "📚 Search Index Ready:",
     searchIndex.length
 );
+fs.writeFileSync(
+
+    "index.json",
+
+    JSON.stringify(
+
+        searchIndex,
+
+        null,
+
+        2
+
+    )
+
+);
+
+console.log(
+
+    "💾 index.json Successfully Created!"
+
+);
