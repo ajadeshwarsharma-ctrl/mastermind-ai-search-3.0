@@ -61,17 +61,43 @@ function searchAjadeshIndex(query) {
         return [];
     }
 
-    return AJADESH_INDEX.filter(item => {
+    const results = AJADESH_INDEX.map(item => {
 
-        const title = String(item.title || "").toLowerCase();
-        const description = String(item.description || "").toLowerCase();
+    const title = String(item.title || "").toLowerCase();
+    const description = String(item.description || "").toLowerCase();
+    const url = String(item.url || "").toLowerCase();
 
-        return (
-            title.includes(cleanQuery) ||
-            description.includes(cleanQuery)
-        );
+    let score = 0;
 
-    });
+    if(title.includes(cleanQuery)){
+        score += 100;
+    }
+
+    if(url.includes(cleanQuery)){
+        score += 50;
+    }
+
+    if(description.includes(cleanQuery)){
+        score += 20;
+    }
+
+    if(
+        url.includes(".gov.in") ||
+        url.includes(".nic.in")
+    ){
+        score += 30;
+    }
+
+    return {
+        ...item,
+        score
+    };
+
+})
+.filter(item => item.score > 0)
+.sort((a,b)=> b.score - a.score);
+
+return results;
 
 }
 
