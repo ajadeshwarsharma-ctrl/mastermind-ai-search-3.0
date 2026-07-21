@@ -398,9 +398,14 @@ function printStatistics(){
 
     const seedUrls = [
 
-        "https://example.com"
+    "https://www.youtube.com",
+    "https://www.instagram.com",
+    "https://www.facebook.com",
+    "https://www.uidai.gov.in",
+    "https://www.mpbse.nic.in",
+    "https://openai.com"
 
-    ];
+];
 
     await startCrawler(seedUrls);
 
