@@ -28,9 +28,13 @@ catch (error) {
 
 }
 const searchIndex = [];
-
+const visitedUrls = new Set();
 for (const page of pages) {
+if (visitedUrls.has(page.url)) {
+    continue;
+}
 
+visitedUrls.add(page.url);
     searchIndex.push({
 
         title: page.title || "",
