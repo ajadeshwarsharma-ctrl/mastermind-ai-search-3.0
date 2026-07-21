@@ -2561,3 +2561,40 @@ if (testBtn) {
     };
 
 }
+// ================================
+// MASTERMIND AI CORE (SAFE MODULE)
+// ================================
+
+function mastermindAI(query){
+
+    const q = String(query || "")
+        .toLowerCase()
+        .trim();
+
+
+    if(q.includes("gta")){
+
+        return `
+        GTA ek open world action game series hai.
+        Isme player missions, vehicles aur exploration kar sakta hai.
+        `;
+
+    }
+
+
+    if(q.includes("youtube")){
+
+        return `
+        YouTube ek video sharing platform hai jahan
+        log videos upload aur watch karte hain.
+        `;
+
+    }
+
+
+    return `
+    Mastermind AI ne "${escapeHTML(query)}" ko analyze kiya hai.
+    Aur jankari ke liye neeche search results dekho.
+    `;
+
+}
