@@ -2290,14 +2290,14 @@ if (closeLoginButton) {
 
 const loginButton = byId("loginBtn");
 
-if (loginButton) {
+/*if (loginButton) {
 
     loginButton.addEventListener(
         "click",
         loginUser
     );
 
-}
+}*/
 
 
 /* =====================================================
@@ -2510,3 +2510,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+const googleLoginBtn = document.getElementById("googleLoginBtn");
+
+if (googleLoginBtn) {
+
+    googleLoginBtn.onclick = async () => {
+
+        try {
+
+            await signInWithPopup(auth, provider);
+
+        } catch(error) {
+
+            console.log(
+                "Google Login Error:",
+                error.message
+            );
+
+        }
+
+    };
+
+}
