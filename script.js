@@ -2561,3 +2561,92 @@ if (testBtn) {
     };
 
 }
+// ================================
+// PROFILE CARD + LOGOUT SYSTEM
+// ================================
+
+auth.onAuthStateChanged((user) => {
+
+    const profileCard = document.getElementById("profileCard");
+    const profilePhoto = document.getElementById("profilePhoto");
+    const profileName = document.getElementById("profileName");
+    const profileEmail = document.getElementById("profileEmail");
+    const signinBtn = document.getElementById("signinBtn");
+
+    if (user) {
+
+        if (profileCard) {
+            profileCard.style.display = "block";
+        }
+
+        if (profilePhoto) {
+            profilePhoto.src = user.photoURL || "";
+        }
+
+        if (profileName) {
+            profileName.innerHTML =
+                user.displayName || "Google User";
+        }
+
+        if (profileEmail) {
+            profileEmail.innerHTML =
+                user.email || "No Email";
+        }
+
+        if (signinBtn) {
+            signinBtn.innerHTML =
+                "👤 " + (user.displayName || "Profile");
+        }
+
+    }
+
+});
+
+
+// LOGOUT
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+
+    logoutBtn.onclick = async () => {
+
+        try {
+
+            await auth.signOut();
+
+            alert("Logout successful 😎");
+
+            location.reload();
+
+        } catch(error) {
+
+            console.log(
+                "Logout Error:",
+                error.message
+            );
+
+        }
+
+    };
+
+}
+
+
+// ACCOUNT SETTINGS
+
+const accountSettings =
+document.getElementById("accountSettings");
+
+if (accountSettings) {
+
+    accountSettings.onclick = () => {
+
+        alert(
+            "⚙️ Account Settings\n\n" +
+            "Yahan future me settings add karenge 🔥"
+        );
+
+    };
+
+}
