@@ -2501,3 +2501,15 @@ auth.onAuthStateChanged((user) => {
     });
 
 }
+// Disable old username/password login popup
+document.addEventListener("DOMContentLoaded", () => {
+
+    const oldLogin = document.getElementById("loginModal");
+
+    if (oldLogin) {
+
+        oldLogin.style.display = "none";
+
+    }
+
+});
