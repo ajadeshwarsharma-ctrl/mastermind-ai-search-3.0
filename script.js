@@ -2272,10 +2272,7 @@ const signInButton = byId("signinBtn");
 
 if (signInButton) {
 
-    signInButton.addEventListener(
-        "click",
-        openLogin
-    );
+ console.log("Firebase Sign In active");
 
 }
 
