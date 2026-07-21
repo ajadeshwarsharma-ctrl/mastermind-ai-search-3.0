@@ -2413,21 +2413,40 @@ const signinBtn = document.getElementById("signinBtn");
 
 if (signinBtn) {
 
-    signinBtn.addEventListener("click", async () => {
+    auth.onAuthStateChanged((user) => {
 
-        try {
+        if (user) {
 
-            const result = await signInWithPopup(auth, provider);
+            signinBtn.innerHTML = `
+                <img src="${user.photoURL || ''}" 
+                width="30" 
+                style="border-radius:50%;vertical-align:middle;">
+                ${user.displayName || "User"}
+            `;
 
-            const user = result.user;
+            signinBtn.onclick = () => {
 
-            signinBtn.innerHTML = "👤 " + user.displayName;
+                auth.signOut();
 
-            console.log("Login Success:", user);
+            };
 
-        } catch (error) {
+        } else {
 
-            console.log("Login Error:", error.message);
+            signinBtn.innerHTML = "Sign In";
+
+            signinBtn.onclick = async () => {
+
+                try {
+
+                    await signInWithPopup(auth, provider);
+
+                } catch(error) {
+
+                    console.log("Login Error:", error.message);
+
+                }
+
+            };
 
         }
 
