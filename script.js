@@ -2409,3 +2409,28 @@ window.MASTERMIND = {
 console.log(
     "🔥 MASTERMIND SEARCH ENGINE READY"
 );
+const signinBtn = document.getElementById("signinBtn");
+
+if (signinBtn) {
+
+    signinBtn.addEventListener("click", async () => {
+
+        try {
+
+            const result = await signInWithPopup(auth, provider);
+
+            const user = result.user;
+
+            signinBtn.innerHTML = "👤 " + user.displayName;
+
+            console.log("Login Success:", user);
+
+        } catch (error) {
+
+            console.log("Login Error:", error.message);
+
+        }
+
+    });
+
+}
