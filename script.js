@@ -2449,7 +2449,55 @@ if (signinBtn) {
             };
 
         }
+// ================================
+// FIREBASE PROFILE LOGIN SYSTEM
+// ================================
 
+auth.onAuthStateChanged((user) => {
+
+    const signinBtn = document.getElementById("signinBtn");
+
+    if (!signinBtn) return;
+
+    if (user) {
+
+        signinBtn.innerHTML = `
+        <img src="${user.photoURL || ''}" 
+        width="30"
+        style="border-radius:50%;vertical-align:middle;">
+        ${user.displayName || "Profile"}
+        `;
+
+        signinBtn.onclick = () => {
+
+            alert(
+                "👤 Name: " + (user.displayName || "") +
+                "\n📧 Email: " + (user.email || "")
+            );
+
+        };
+
+    } else {
+
+        signinBtn.innerHTML = "Sign In";
+
+        signinBtn.onclick = async () => {
+
+            try {
+
+                await signInWithPopup(auth, provider);
+
+            } catch(error) {
+
+                console.log(error.message);
+
+            }
+
+        };
+
+    }
+
+});
     });
 
 }
