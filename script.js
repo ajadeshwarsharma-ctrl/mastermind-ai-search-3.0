@@ -2679,3 +2679,31 @@ console.log("PROFILE SYSTEM LOADED");
 console.log(
     document.getElementById("profileCard")
 );
+// ================================
+// MASTERMIND AI OVERVIEW SYSTEM
+// ================================
+
+function generateAIOverview(query) {
+
+    const clean = String(query || "").trim();
+
+    if (!clean) {
+        return "Kuch search karo bhai 😅";
+    }
+
+
+    return `
+    <h2>🤖 Mastermind AI Overview</h2>
+
+    <p>
+    "${escapeHTML(clean)}" ke baare me 
+    Mastermind AI analyze kar raha hai 🔥
+    </p>
+
+    <p>
+    Neeche diye gaye search results se 
+    aur jankari mil sakti hai.
+    </p>
+    `;
+
+}
