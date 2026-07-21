@@ -2548,3 +2548,16 @@ if (googleLoginBtn) {
     };
 
 }
+console.log("LAST CODE RUNNING");
+
+const testBtn = document.getElementById("signinBtn");
+
+if (testBtn) {
+
+    testBtn.onclick = () => {
+
+        alert("BUTTON CONTROL MIL GAYA 😎");
+
+    };
+
+}
