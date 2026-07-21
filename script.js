@@ -2650,3 +2650,8 @@ if (accountSettings) {
     };
 
 }
+console.log("PROFILE SYSTEM LOADED");
+
+console.log(
+    document.getElementById("profileCard")
+);
