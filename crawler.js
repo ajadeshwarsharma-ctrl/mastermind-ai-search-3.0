@@ -218,7 +218,8 @@ function extractParagraphs($){
 
 function extractLinks($,base){
 
-    const links = [];
+ const links = [];
+const visitedLinks = new Set();
 
     $("a[href]").each((i,el)=>{
 
