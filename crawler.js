@@ -12,7 +12,19 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 const cheerio = require("cheerio");
+const SEED_FILE = path.join(__dirname, "seed-urls.json");
 
+function loadSeeds() {
+
+    if (!fs.existsSync(SEED_FILE)) {
+        return [];
+    }
+
+    return JSON.parse(
+        fs.readFileSync(SEED_FILE, "utf8")
+    );
+
+}
 const RAW_DATA_FILE = path.join(__dirname, "raw-data.json");
 
 const USER_AGENT =
