@@ -418,7 +418,7 @@ function printStatistics(){
     "https://openai.com"
 
 ];
-
+const dynamicSeeds = loadSeeds();
     await startCrawler(seedUrls);
 
     saveDatabase();
