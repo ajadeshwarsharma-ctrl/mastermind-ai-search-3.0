@@ -164,6 +164,37 @@ async function canCrawl(url) {
     }
 
 }
+async function getSitemapLinks(url){
+
+    try{
+
+        const sitemapUrl = new URL("/sitemap.xml", url).href;
+
+        const response = await axios.get(sitemapUrl,{
+
+            timeout:5000,
+
+            headers:{
+                "User-Agent":USER_AGENT
+            }
+
+        });
+
+        const xml = response.data;
+
+        const matches = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)];
+
+        return matches.map(item => item[1]);
+
+    }
+
+    catch(e){
+
+        return [];
+
+    }
+
+}
 function text(node){
 
     return node
