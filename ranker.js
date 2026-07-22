@@ -67,7 +67,8 @@ function calculateScore(query, page) {
     // ==========================
     if (url.startsWith("https://"))
         score += 10;
-
+// Authority Bonus
+score += getAuthority(url);
     return score;
 
 }
