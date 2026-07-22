@@ -323,11 +323,7 @@ function buildRecord(url,$){
     if(!html) return;
 
     const $ = cheerio.load(html);
-const internalLinks = extractInternalLinks($, url);
 
-for (const link of internalLinks.slice(0, 20)) {
-    enqueue(link);
-}
     const record = buildRecord(url,$);
 
     database.push(record);
