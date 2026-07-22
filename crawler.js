@@ -415,6 +415,21 @@ if (!allowed) {
     return;
 
 }
+ const domain = new URL(url).origin;
+
+if (!sitemapCache.has(domain)) {
+
+    sitemapCache.add(domain);
+
+    const sitemapLinks = await getSitemapLinks(domain);
+
+    for (const sitemapUrl of sitemapLinks.slice(0, 50)) {
+
+        enqueue(sitemapUrl);
+
+    }
+
+}
     const html = await download(url);
 
     if(!html) return;
