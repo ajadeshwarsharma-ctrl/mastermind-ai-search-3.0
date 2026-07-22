@@ -228,14 +228,41 @@ function extractLinks($,base){
 
         if(!absoluteUrl) return;
 
-        links.push({
+       if (
 
-            url:absoluteUrl,
+    absoluteUrl.startsWith("http") &&
 
-            text:text($(el))
+    !absoluteUrl.endsWith(".jpg") &&
 
-        });
+    !absoluteUrl.endsWith(".jpeg") &&
 
+    !absoluteUrl.endsWith(".png") &&
+
+    !absoluteUrl.endsWith(".gif") &&
+
+    !absoluteUrl.endsWith(".svg") &&
+
+    !absoluteUrl.endsWith(".pdf") &&
+
+    !absoluteUrl.endsWith(".zip") &&
+
+    !absoluteUrl.endsWith(".rar") &&
+
+    !absoluteUrl.endsWith(".mp4") &&
+
+    !absoluteUrl.endsWith(".mp3")
+
+){
+
+    links.push({
+
+        url:absoluteUrl,
+
+        text:text($(el))
+
+    });
+
+}
     });
 
     return links;
