@@ -375,7 +375,15 @@ function buildRecord(url,$){
 }async function crawlPage(url){
 
     console.log("🌍 Crawling:", url);
+const allowed = await canCrawl(url);
 
+if (!allowed) {
+
+    console.log("🚫 Blocked by robots.txt:", url);
+
+    return;
+
+}
     const html = await download(url);
 
     if(!html) return;
