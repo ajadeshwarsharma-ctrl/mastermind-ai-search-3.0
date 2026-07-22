@@ -255,13 +255,19 @@ const visitedLinks = new Set();
 
 ){
 
+    if (!visitedLinks.has(absoluteUrl)) {
+
+    visitedLinks.add(absoluteUrl);
+
     links.push({
 
-        url:absoluteUrl,
+        url: absoluteUrl,
 
-        text:text($(el))
+        text: text($(el))
 
     });
+
+}
 
 }
     });
