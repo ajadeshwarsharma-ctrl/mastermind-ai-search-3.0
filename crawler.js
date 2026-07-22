@@ -365,7 +365,33 @@ async function startCrawler(seedUrls){
     }
 
 }
+function extractInternalLinks($, baseUrl) {
 
+    const links = new Set();
+
+    $("a").each((_, element) => {
+
+        const href = $(element).attr("href");
+
+        if (!href) return;
+
+        try {
+
+            const absolute = new URL(href, baseUrl).href;
+
+            if (absolute.startsWith(baseUrl)) {
+                links.add(absolute);
+            }
+
+        } catch (e) {
+            // Ignore invalid URLs
+        }
+
+    });
+
+    return [...links];
+
+}
 function saveDatabase(){
 
     fs.writeFileSync(
