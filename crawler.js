@@ -419,6 +419,9 @@ function printStatistics(){
 
 ];
 const dynamicSeeds = loadSeeds();
+ if (dynamicSeeds.length > 0) {
+    seedUrls.push(...dynamicSeeds);
+}
     await startCrawler(seedUrls);
 
     saveDatabase();
