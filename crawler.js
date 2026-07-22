@@ -139,7 +139,31 @@ async function download(url){
     }
 
 }
+async function canCrawl(url) {
 
+    try {
+
+        const robotsUrl = new URL("/robots.txt", url).href;
+
+        const robots = await axios.get(robotsUrl, {
+            timeout: 5000
+        });
+
+        const text = robots.data.toLowerCase();
+
+        if (text.includes("disallow: /")) {
+            return false;
+        }
+
+        return true;
+
+    } catch (e) {
+
+        return true;
+
+    }
+
+}
 function text(node){
 
     return node
