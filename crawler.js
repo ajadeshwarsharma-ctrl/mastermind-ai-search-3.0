@@ -39,7 +39,7 @@ const queue = [];
 const visited = new Set();
 
 const database = [];
-
+const sitemapCache = new Set();
 const statistics = {
 
     crawled: 0,
