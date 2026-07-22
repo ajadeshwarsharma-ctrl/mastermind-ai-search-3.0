@@ -1,52 +1,100 @@
 // ===============================
-// AJADESH RANKER v1
+// AJADESH RANKER v2
 // ===============================
 
+"use strict";
+
 function calculateScore(query, page) {
-    query = query.toLowerCase();
+
+    query = query.toLowerCase().trim();
 
     let score = 0;
 
     const title = (page.title || "").toLowerCase();
-    const text = (page.text || "").toLowerCase();
-    const keywords = page.keywords || [];
+    const url = (page.url || "").toLowerCase();
+    const text = (page.text || page.body || "").toLowerCase();
 
-    // Title Match
-    if (title.includes(query)) {
-        score += 100;
-    }
+    const keywords = Array.isArray(page.keywords)
+        ? page.keywords
+        : String(page.keywords || "").split(",");
 
+    // ==========================
+    // Exact Title Match
+    // ==========================
+    if (title === query)
+        score += 300;
+
+    else if (title.startsWith(query))
+        score += 220;
+
+    else if (title.includes(query))
+        score += 150;
+
+    // ==========================
     // URL Match
-    if ((page.url || "").toLowerCase().includes(query)) {
-        score += 50;
-    }
+    // ==========================
+    if (url.includes(query))
+        score += 80;
 
-    // Text Match
-    if (text.includes(query)) {
-        score += 20;
-    }
-
-    // Keyword Match
+    // ==========================
+    // Keywords
+    // ==========================
     for (const word of keywords) {
-        if (word.includes(query)) {
-            score += 5;
-        }
+
+        if (String(word).toLowerCase().includes(query))
+            score += 15;
+
     }
+
+    // ==========================
+    // Body/Text Match
+    // ==========================
+    if (text.includes(query))
+        score += 40;
+
+    // ==========================
+    // Homepage Bonus
+    // ==========================
+    if (
+        url.endsWith("/") ||
+        url.split("/").length <= 4
+    ) {
+        score += 15;
+    }
+
+    // ==========================
+    // HTTPS Bonus
+    // ==========================
+    if (url.startsWith("https://"))
+        score += 10;
 
     return score;
+
 }
 
 function rankResults(query, pages) {
 
+    const ranked = [];
+
     for (const page of pages) {
-        page.score = calculateScore(query, page);
+
+        const copy = { ...page };
+
+        copy.score = calculateScore(query, copy);
+
+        if (copy.score > 0)
+            ranked.push(copy);
+
     }
 
-    pages.sort((a, b) => b.score - a.score);
+    ranked.sort((a, b) => b.score - a.score);
 
-    return pages;
+    return ranked;
+
 }
 
 module.exports = {
+
     rankResults
+
 };
