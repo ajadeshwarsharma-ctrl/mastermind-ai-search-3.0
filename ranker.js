@@ -3,7 +3,7 @@
 // ===============================
 
 "use strict";
-
+const { getAuthority } = require("./authority");
 function calculateScore(query, page) {
 
     query = query.toLowerCase().trim();
