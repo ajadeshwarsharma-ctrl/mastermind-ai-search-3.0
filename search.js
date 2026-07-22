@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { rankResults } = require("./ranker");
-
+const { getSuggestions } = require("./suggestions");
 function search(query) {
 
     const index = JSON.parse(
