@@ -7,12 +7,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const provider = new GoogleAuthProvider();
 /* =====================================================
    MASTERMIND SEARCH ENGINE — CLEAN BUG FIX VERSION
    ===================================================== */
