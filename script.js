@@ -7,6 +7,20 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyD60CDixs5q56UjZxjh3obvAdWYMBs3gCA",
+  authDomain: "mastermind-ajadesh-search.firebaseapp.com",
+  projectId: "mastermind-ajadesh-search",
+  storageBucket: "mastermind-ajadesh-search.firebasestorage.app",
+  messagingSenderId: "908591909403",
+  appId: "1:908591909403:web:dac78f8a731a2923bac6be"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
 /* =====================================================
    MASTERMIND SEARCH ENGINE — CLEAN BUG FIX VERSION
    ===================================================== */
