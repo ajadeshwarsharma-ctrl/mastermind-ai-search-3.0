@@ -1,15 +1,30 @@
 {
   "name": "ajadesh-search-engine",
-  "version": "2.0.0",
-  "description": "Ajadesh Search Engine Production Crawler",
-  "main": "crawler.js",
+  "version": "2.1.0",
+  "description": "Ajadesh Search Engine Production Server + Crawler",
+  "main": "server.js",
   "type": "commonjs",
   "scripts": {
+    "start": "node server.js",
     "crawl": "node crawler.js",
     "index": "node indexer.js"
   },
   "dependencies": {
     "axios": "^1.7.2",
-    "cheerio": "^1.0.0"
-  }
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "search-engine",
+    "crawler",
+    "indexer",
+    "ajadesh",
+    "mastermind"
+  ],
+  "author": "Ajadeshwar Sharma",
+  "license": "MIT"
 }
