@@ -17,7 +17,17 @@ function loadRawData() {
     );
 
 }
+function loadKnowledge() {
 
+    if (!fs.existsSync(KNOWLEDGE_FILE)) {
+        return [];
+    }
+
+    return JSON.parse(
+        fs.readFileSync(KNOWLEDGE_FILE, "utf8")
+    );
+
+}
 function normalize(text) {
 
     return String(text || "")
