@@ -110,11 +110,25 @@ function main() {
 
     const raw = loadRawData();
 
-    const index = buildIndex(raw);
+    const knowledge = loadKnowledge();
+
+    const allPages = [
+
+        ...raw,
+
+        ...knowledge
+
+    ];
+
+    const index = buildIndex(allPages);
 
     saveIndex(index);
 
-    console.log("✅ Indexed:", index.length, "pages");
+    console.log("🌐 Raw Pages :", raw.length);
+
+    console.log("🧠 Knowledge :", knowledge.length);
+
+    console.log("✅ Indexed :", index.length);
 
 }
 
