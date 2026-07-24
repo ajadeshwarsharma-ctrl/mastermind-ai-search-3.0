@@ -1,4 +1,7 @@
 const fs = require("fs");
+const knowledge = JSON.parse(
+    fs.readFileSync("knowledge.json", "utf8")
+);
 const { rankResults } = require("./ranker");
 const { getSuggestions } = require("./suggestions");
 function search(query) {
