@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -16,14 +15,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Install Dependencies
         run: npm install
+
       - name: Run Ajadesh Crawler
         run: node crawler.js
+
+      - name: Build Search Index
+        run: node indexer.js
+
       - name: Save Ajadesh Data
         run: |
           git config --global user.name "AjadeshBot"
           git config --global user.email "ajadeshbot@users.noreply.github.com"
+
           git add raw-data.json
+          git add index.json
+
+          if [ -f knowledge.json ]; then
+            git add knowledge.json
+          fi
+
           git commit -m "🤖 AjadeshBot updated search data" || echo "No new data"
+
           git push
