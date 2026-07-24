@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Samagra Portal",
+    "keywords": ["samagra","samagra id","samagra portal"],
+    "description": "Madhya Pradesh Samagra Citizen Services.",
+    "url": "https://samagra.gov.in"
+  },
+  {
+    "title": "MPOnline",
+    "keywords": ["mponline","mp online"],
+    "description": "Official MPOnline Portal.",
+    "url": "https://www.mponline.gov.in"
+  },
+  {
+    "title": "UIDAI",
+    "keywords": ["aadhaar","aadhar","uidai"],
+    "description": "Official Aadhaar Services.",
+    "url": "https://uidai.gov.in"
+  },
+  {
+    "title": "CSC Digital Seva",
+    "keywords": ["csc","digital seva"],
+    "description": "Common Service Center Portal.",
+    "url": "https://digitalseva.csc.gov.in"
+  },
+  {
+    "title": "IRCTC",
+    "keywords": ["train","railway","irctc"],
+    "description": "Indian Railway Ticket Booking.",
+    "url": "https://www.irctc.co.in"
+  }
+]
