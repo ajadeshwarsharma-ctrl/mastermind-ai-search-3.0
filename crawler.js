@@ -673,7 +673,8 @@ async function run(){
     loadDatabase();
 
     console.log("📂 Existing Records :", database.length);
-
+    console.log("📁 Seed File:", SEED_FILE);
+    console.log("📄 File Exists:", fs.existsSync(SEED_FILE));
     const seeds = loadSeeds();
 
     console.log("🌱 Seed URLs :", seeds.length);
