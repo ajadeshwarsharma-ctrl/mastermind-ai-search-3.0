@@ -1,5 +1,5 @@
 "use strict";
-
+console.log("🔥 CRAWLER FILE STARTED");
 /*
 =========================================
  Mastermind X Search Engine
