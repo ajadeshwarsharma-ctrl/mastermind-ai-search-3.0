@@ -24,26 +24,6 @@ function loadSeeds() {
         console.log("❌ Seed Loader Error");
         console.log(err.message);
 
-        if (err.message.includes("position")) {
-
-            const pos = Number(
-                err.message.match(/position (\\d+)/)?.[1] || 0
-            );
-
-            const text = fs.readFileSync(SEED_FILE, "utf8");
-
-            console.log("------------ ERROR AREA ------------");
-
-            console.log(
-                text.substring(
-                    Math.max(0, pos - 100),
-                    pos + 100
-                )
-            );
-
-            console.log("------------------------------------");
-        }
-
         return [];
     }
 }
@@ -53,17 +33,17 @@ async function run() {
     console.log("🚀 run() started");
 
     const seeds = loadSeeds();
-console.log("📄 Total Seeds:", seeds.length);
 
-if (seeds.length > 0) {
+    console.log("📄 Total Seeds:", seeds.length);
 
-    console.log("First URL:", seeds[0]);
+    if (seeds.length > 0) {
+        console.log("First URL:", seeds[0]);
+        console.log("Type:", typeof seeds[0]);
+        console.log("Raw:", JSON.stringify(seeds[0]));
+        console.log("Last URL:", seeds[seeds.length - 1]);
+    }
 
-    console.log(typeof seeds[0]);
-
-    console.log(JSON.stringify(seeds[0]));
-
-    console.log("Last URL:", seeds[seeds.length - 1]);
+    console.log("🏁 Test Finished");
 }
 
-console.log("🏁 Test Finished");
+run().catch(console.error);
