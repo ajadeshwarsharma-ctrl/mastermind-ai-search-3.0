@@ -53,17 +53,17 @@ async function run() {
     console.log("🚀 run() started");
 
     const seeds = loadSeeds();
+console.log("📄 Total Seeds:", seeds.length);
 
-    console.log("📄 Total Seeds:", seeds.length);
+if (seeds.length > 0) {
 
-    if (seeds.length > 0) {
+    console.log("First URL:", seeds[0]);
 
-        console.log("First URL:", seeds[0]);
+    console.log(typeof seeds[0]);
 
-        console.log("Last URL:", seeds[seeds.length - 1]);
-    }
+    console.log(JSON.stringify(seeds[0]));
 
-    console.log("🏁 Test Finished");
+    console.log("Last URL:", seeds[seeds.length - 1]);
 }
 
-run();
+console.log("🏁 Test Finished");
