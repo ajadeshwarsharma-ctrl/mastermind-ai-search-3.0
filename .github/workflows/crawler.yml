@@ -23,7 +23,13 @@ jobs:
         run: npm install
 
       - name: 🚀 Run Mastermind X Crawler
-        run: node crawler.js
+        run: |
+       echo "===== DEBUG START ====="
+        pwd
+       ls -la
+       echo "===== RUNNING CRAWLER ====="
+       node crawler.js
+       echo "===== DEBUG END ====="
 
       - name: 📚 Build Search Index
         run: node indexer.js
