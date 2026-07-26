@@ -15,9 +15,19 @@ function loadSeeds() {
 
         const seeds = JSON.parse(text);
 
-        console.log("✅ Seed URLs Loaded:", seeds.length);
+        const cleanSeeds = seeds.map(url => {
+        if (typeof url !== "string") return "";
 
-        return seeds;
+        const md = url.match(/\((https?:\/\/[^)]+)\)/);
+
+        if (md) return md[1];
+
+        return url.trim();
+        }).filter(url => url.startsWith("http"));
+
+        console.log("✅ Seed URLs Loaded:", cleanSeeds.length);
+
+        return cleanSeeds;
 
     } catch (err) {
 
