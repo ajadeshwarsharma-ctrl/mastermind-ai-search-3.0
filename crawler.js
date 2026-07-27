@@ -43,7 +43,42 @@ async function run() {
     console.log("🚀 run() started");
 
     const seeds = loadSeeds();
+const axios = require("axios");
+const cheerio = require("cheerio");
 
+let rawData = [];
+
+for (const url of seeds) {
+  try {
+    console.log("🌍 Crawling:", url);
+
+    const { data } = await axios.get(url, {
+      timeout: 10000,
+      headers: {
+        "User-Agent": "MastermindXBot/1.0"
+      }
+    });
+
+    const $ = cheerio.load(data);
+
+    rawData.push({
+      url,
+      title: $("title").text().trim(),
+      description: $('meta[name="description"]').attr("content") || "",
+      body: $("body").text().replace(/\s+/g, " ").trim()
+    });
+
+  } catch (err) {
+    console.log("❌ Failed:", url);
+  }
+}
+
+fs.writeFileSync(
+  "raw-data.json",
+  JSON.stringify(rawData, null, 2)
+);
+
+console.log("✅ Crawled Pages:", rawData.length);
     console.log("📄 Total Seeds:", seeds.length);
 
     if (seeds.length > 0) {
