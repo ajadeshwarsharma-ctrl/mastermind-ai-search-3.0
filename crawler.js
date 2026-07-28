@@ -11,7 +11,59 @@ const SEED_FILE = path.join(__dirname, "seed-urls.json");
 const QUEUE_FILE = path.join(__dirname, "queue.json");
 const VISITED_FILE = path.join(__dirname, "visited.json");
 const RAW_FILE = path.join(__dirname, "raw-data.json");
+function loadQueue() {
+    if (!fs.existsSync(QUEUE_FILE)) return [];
 
+    try {
+        return JSON.parse(fs.readFileSync(QUEUE_FILE, "utf8"));
+    } catch {
+        return [];
+    }
+}
+
+function saveQueue(queue) {
+    fs.writeFileSync(
+        QUEUE_FILE,
+        JSON.stringify(queue, null, 2),
+        "utf8"
+    );
+}
+
+function loadVisited() {
+    if (!fs.existsSync(VISITED_FILE)) return [];
+
+    try {
+        return JSON.parse(fs.readFileSync(VISITED_FILE, "utf8"));
+    } catch {
+        return [];
+    }
+}
+
+function saveVisited(visited) {
+    fs.writeFileSync(
+        VISITED_FILE,
+        JSON.stringify(visited, null, 2),
+        "utf8"
+    );
+}
+
+function loadRaw() {
+    if (!fs.existsSync(RAW_FILE)) return [];
+
+    try {
+        return JSON.parse(fs.readFileSync(RAW_FILE, "utf8"));
+    } catch {
+        return [];
+    }
+}
+
+function saveRaw(raw) {
+    fs.writeFileSync(
+        RAW_FILE,
+        JSON.stringify(raw, null, 2),
+        "utf8"
+    );
+}
 function loadSeeds() {
     try {
         const text = fs.readFileSync(SEED_FILE, "utf8");
