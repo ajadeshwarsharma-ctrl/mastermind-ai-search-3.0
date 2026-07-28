@@ -100,8 +100,15 @@ async function run() {
     console.log("🚀 run() started");
 
     const seeds = loadSeeds();
-    let rawData = [];
+    
+    let queue = loadQueue();
+    let visited = loadVisited();
+    let rawData = loadRaw();
 
+if (queue.length === 0) {
+    queue = [...seeds];
+    saveQueue(queue);
+}
     for (const url of seeds) {
      try {
     console.log("🌍 Crawling:", url);
