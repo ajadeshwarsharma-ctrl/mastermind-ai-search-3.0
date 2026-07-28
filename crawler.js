@@ -48,13 +48,10 @@ async function run() {
     console.log("🚀 run() started");
 
     const seeds = loadSeeds();
-const axios = require("axios");
-const cheerio = require("cheerio");
+    let rawData = [];
 
-let rawData = [];
-
-for (const url of seeds) {
-  try {
+    for (const url of seeds) {
+     try {
     console.log("🌍 Crawling:", url);
 
     const { data } = await axios.get(url, {
