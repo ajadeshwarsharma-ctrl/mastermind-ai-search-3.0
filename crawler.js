@@ -2,10 +2,15 @@
 
 const fs = require("fs");
 const path = require("path");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 console.log("🔥 Mastermind X Crawler Started");
 
 const SEED_FILE = path.join(__dirname, "seed-urls.json");
+const QUEUE_FILE = path.join(__dirname, "queue.json");
+const VISITED_FILE = path.join(__dirname, "visited.json");
+const RAW_FILE = path.join(__dirname, "raw-data.json");
 
 function loadSeeds() {
     try {
