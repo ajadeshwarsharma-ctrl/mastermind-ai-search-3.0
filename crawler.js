@@ -264,10 +264,15 @@ async function crawl(url) {
                 $('meta[name="description"]').attr("content") || ""
             ),
 
-            body: normalize(
-                $("body").text()
-            ),
-
+           body: normalize(
+    $("body")
+        .text()
+        .replace(/AKIA[0-9A-Z]{16}/g, "[AWS_ACCESS_KEY]")
+        .replace(/[A-Za-z0-9\/+=]{40}/g, "[AWS_SECRET_KEY]")
+        .replace(/AIza[0-9A-Za-z\-_]{35}/g, "[GOOGLE_API_KEY]")
+        .replace(/ghp_[A-Za-z0-9]{36}/g, "[GITHUB_TOKEN]")
+        .replace(/sk-[A-Za-z0-9]{20,}/g, "[OPENAI_KEY]")
+),
             links: []
 
         };
