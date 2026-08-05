@@ -106,13 +106,31 @@ function buildIndex(pages) {
 
 function saveIndex(index) {
 
-    fs.writeFileSync(
-        INDEX_FILE,
-        JSON.stringify(index, null, 2),
-        "utf8"
-    );
+    const CHUNK_SIZE = 5000;
 
-    console.log("✅ index.json written");
+    let part = 1;
+
+    for (let i = 0; i < index.length; i += CHUNK_SIZE) {
+
+        const chunk = index.slice(i, i + CHUNK_SIZE);
+
+        const file = path.join(
+            INDEX_DIR,
+            `index-${String(part).padStart(4, "0")}.json`
+        );
+
+        fs.writeFileSync(
+            file,
+            JSON.stringify(chunk, null, 2),
+            "utf8"
+        );
+
+        console.log("✅ Written:", file);
+
+        part++;
+
+    }
+
 }
 
 function main() {
