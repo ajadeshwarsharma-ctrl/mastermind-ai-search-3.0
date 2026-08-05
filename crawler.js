@@ -154,10 +154,36 @@ function getLatestRawFile() {
 
     }
 
-    return path.join(
+    let latest = path.join(
         RAW_DIR,
         files[files.length - 1]
     );
+
+    if (fs.existsSync(latest)) {
+
+        const sizeMB =
+            fs.statSync(latest).size / 1024 / 1024;
+
+        if (sizeMB >= 40) {
+
+            const next = String(files.length + 1).padStart(4, "0");
+
+            latest = path.join(
+                RAW_DIR,
+                `raw-data-${next}.json`
+            );
+
+            if (!fs.existsSync(latest)) {
+
+                writeJSON(latest, []);
+
+            }
+
+        }
+
+    }
+
+    return latest;
 
 }
 function loadRaw(file) {
