@@ -172,11 +172,16 @@ function saveRaw(page) {
 
     let raw = loadRaw(file);
 
+    // Duplicate URL check
+    if (raw.some(p => p.url === page.url)) {
+        return;
+    }
+
     raw.push(page);
 
     writeJSON(file, raw);
 
-    const sizeMB = fs.statSync(file).size / 1024 / 1024;
+    let sizeMB = fs.statSync(file).size / 1024 / 1024;
 
     if (sizeMB >= 40) {
 
@@ -191,9 +196,13 @@ function saveRaw(page) {
             `raw-data-${next}.json`
         );
 
-        writeJSON(newFile, []);
+        if (!fs.existsSync(newFile)) {
 
-        console.log("📦 New Raw File:", newFile);
+            writeJSON(newFile, []);
+
+            console.log("📦 Created:", newFile);
+
+        }
 
     }
 
