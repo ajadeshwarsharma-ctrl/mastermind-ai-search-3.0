@@ -3,9 +3,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const RAW_FILE = path.join(__dirname, "raw-data.json");
-const INDEX_FILE = path.join(__dirname, "index.json");
+const RAW_DIR = path.join(__dirname, "database", "raw");
+const INDEX_DIR = path.join(__dirname, "database", "index");
 const KNOWLEDGE_FILE = path.join(__dirname, "knowledge.json");
+
+if (!fs.existsSync(INDEX_DIR)) {
+    fs.mkdirSync(INDEX_DIR, { recursive: true });
+}
 
 function loadRawData() {
     if (!fs.existsSync(RAW_FILE)) {
