@@ -5,81 +5,100 @@ const path = require("path");
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-console.log("🔥 Mastermind X Crawler Started");
+console.log("🔥 Mastermind X Crawler v5 Started");
+
+const USER_AGENT = "MastermindXBot/5.0";
 
 const SEED_FILE = path.join(__dirname, "seed-urls.json");
 const QUEUE_FILE = path.join(__dirname, "queue.json");
 const VISITED_FILE = path.join(__dirname, "visited.json");
-const RAW_FILE = path.join(__dirname, "raw-data.json");
 
-const USER_AGENT = "MastermindXBot/2.0";
+const RAW_DIR = path.join(__dirname, "database", "raw");
+
+if (!fs.existsSync(RAW_DIR)) {
+    fs.mkdirSync(RAW_DIR, { recursive: true });
+}
 
 function readJSON(file, fallback = []) {
+
     try {
+
         if (!fs.existsSync(file)) return fallback;
+
         const txt = fs.readFileSync(file, "utf8").trim();
+
         if (!txt) return fallback;
+
         return JSON.parse(txt);
+
     } catch {
+
         return fallback;
+
     }
+
 }
 
 function writeJSON(file, data) {
-    fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf8");
+
+    fs.writeFileSync(
+        file,
+        JSON.stringify(data, null, 2),
+        "utf8"
+    );
+
 }
 
 function loadSeeds() {
+
     const seeds = readJSON(SEED_FILE, []);
 
-    const clean = seeds
+    return seeds
         .map(s => {
+
             if (typeof s !== "string") return "";
 
             const md = s.match(/\((https?:\/\/[^)]+)\)/);
+
             if (md) return md[1];
 
             return s.trim();
+
         })
         .filter(s => s.startsWith("http"));
 
-    console.log("🌱 Seeds:", clean.length);
-
-    return clean;
 }
 
 function loadQueue() {
+
     return readJSON(QUEUE_FILE, []);
+
 }
 
-function saveQueue(q) {
-    writeJSON(QUEUE_FILE, q);
+function saveQueue(queue) {
+
+    writeJSON(QUEUE_FILE, queue);
+
 }
 
 function loadVisited() {
+
     return readJSON(VISITED_FILE, []);
+
 }
 
-function saveVisited(v) {
-    writeJSON(VISITED_FILE, v);
-}
+function saveVisited(visited) {
 
-function loadRaw() {
-    return readJSON(RAW_FILE, []);
-}
+    writeJSON(VISITED_FILE, visited);
 
-function saveRaw(raw) {
-    writeJSON(RAW_FILE, raw);
 }
 
 function normalize(text) {
+
     return String(text || "")
         .replace(/\s+/g, " ")
         .trim();
-}
 
-function pageExists(rawData, url) {
-    return rawData.some(p => p.url === url);
 }
 
 function isValidLink(link) {
@@ -88,33 +107,114 @@ function isValidLink(link) {
 
     if (!link.startsWith("http")) return false;
 
-    if (
-        link.includes(".jpg") ||
-        link.includes(".jpeg") ||
-        link.includes(".png") ||
-        link.includes(".gif") ||
-        link.includes(".svg") ||
-        link.includes(".pdf") ||
-        link.includes(".zip") ||
-        link.includes("mailto:") ||
-        link.includes("javascript:")
-    ) {
-        return false;
+    const bad = [
+
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".svg",
+        ".pdf",
+        ".zip",
+        ".rar",
+        ".mp4",
+        ".mp3",
+        ".avi",
+        "mailto:",
+        "javascript:"
+
+    ];
+
+    for (const ext of bad) {
+
+        if (link.includes(ext)) {
+
+            return false;
+
+        }
+
     }
 
     return true;
+
 }
-async function crawlPage(url) {
+
+function getLatestRawFile() {
+
+    const files = fs.readdirSync(RAW_DIR)
+        .filter(f => f.startsWith("raw-data-"))
+        .sort();
+
+    if (files.length === 0) {
+
+        return path.join(
+            RAW_DIR,
+            "raw-data-0001.json"
+        );
+
+    }
+
+    return path.join(
+        RAW_DIR,
+        files[files.length - 1]
+    );
+
+}
+function loadRaw(file) {
+
+    return readJSON(file, []);
+
+}
+
+function saveRaw(page) {
+
+    let file = getLatestRawFile();
+
+    let raw = loadRaw(file);
+
+    raw.push(page);
+
+    writeJSON(file, raw);
+
+    const sizeMB = fs.statSync(file).size / 1024 / 1024;
+
+    if (sizeMB >= 40) {
+
+        const files = fs.readdirSync(RAW_DIR)
+            .filter(f => f.startsWith("raw-data-"))
+            .sort();
+
+        const next = String(files.length + 1).padStart(4, "0");
+
+        const newFile = path.join(
+            RAW_DIR,
+            `raw-data-${next}.json`
+        );
+
+        writeJSON(newFile, []);
+
+        console.log("📦 New Raw File:", newFile);
+
+    }
+
+}
+
+async function crawl(url) {
 
     try {
 
-        console.log("🌍 Crawling:", url);
+        console.log("🌍", url);
 
         const { data } = await axios.get(url, {
+
             timeout: 10000,
+
             headers: {
+
                 "User-Agent": USER_AGENT
+
             }
+
         });
 
         const $ = cheerio.load(data);
@@ -131,11 +231,11 @@ async function crawlPage(url) {
 
             body: normalize(
                 $("body").text()
-            )
+            ),
+
+            links: []
 
         };
-
-        const links = [];
 
         $("a").each((i, el) => {
 
@@ -157,17 +257,17 @@ async function crawlPage(url) {
 
             if (isValidLink(href)) {
 
-                links.push(href);
+                page.links.push(href);
 
             }
 
         });
 
-        page.links = [...new Set(links)];
+        page.links = [...new Set(page.links)];
 
         return page;
 
-    } catch (err) {
+    } catch {
 
         console.log("❌ Failed:", url);
 
@@ -176,18 +276,15 @@ async function crawlPage(url) {
     }
 
 }
-
 async function run() {
 
-    console.log("🚀 run() started");
+    console.log("🚀 Starting Crawl...");
 
     const seeds = loadSeeds();
 
     let queue = loadQueue();
 
     let visited = loadVisited();
-
-    let rawData = loadRaw();
 
     if (queue.length === 0) {
 
@@ -213,7 +310,7 @@ async function run() {
 
         saveQueue(queue);
 
-        const page = await crawlPage(url);
+        const page = await crawl(url);
 
         if (!page) {
 
@@ -221,18 +318,14 @@ async function run() {
 
         }
 
-        if (!pageExists(rawData, page.url)) {
+        saveRaw(page);
 
-            rawData.push(page);
+        for (const link of page.links) {
 
-            saveRaw(rawData);
-
-            console.log("💾 Saved:", page.url);
-
-        }
-                for (const link of page.links) {
-
-            if (!visited.includes(link) && !queue.includes(link)) {
+            if (
+                !visited.includes(link) &&
+                !queue.includes(link)
+            ) {
 
                 queue.push(link);
 
@@ -242,29 +335,30 @@ async function run() {
 
         saveQueue(queue);
 
-        console.log("📥 Queue:", queue.length);
-        console.log("📚 Visited:", visited.length);
-        console.log("💾 Raw Pages:", rawData.length);
+        console.log("📥 Queue :", queue.length);
+        console.log("📚 Visited :", visited.length);
 
-        // Safety limit per run (GitHub Actions timeout se bachne ke liye)
+        // GitHub Actions timeout se bachne ke liye
         if (visited.length % 500 === 0) {
-            console.log("⏸️ Saved progress...");
+
+            console.log("💾 Progress Saved");
             break;
+
         }
 
     }
 
-    console.log("");
-    console.log("======================================");
-    console.log("🎉 Crawl Finished");
-    console.log("🌱 Seeds      :", seeds.length);
-    console.log("📚 Visited    :", visited.length);
+    console.log("=================================");
+    console.log("✅ Crawl Finished");
+    console.log("🌱 Seeds :", seeds.length);
+    console.log("📚 Visited :", visited.length);
     console.log("📥 Queue Left :", queue.length);
-    console.log("💾 Raw Pages  :", rawData.length);
-    console.log("======================================");
+    console.log("=================================");
+
 }
 
 run().catch(err => {
-    console.error("💥 Fatal Error");
+
     console.error(err);
+
 });
