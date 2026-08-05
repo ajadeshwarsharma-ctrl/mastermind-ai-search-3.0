@@ -12,11 +12,40 @@ if (!fs.existsSync(INDEX_DIR)) {
 }
 
 function loadRawData() {
-    if (!fs.existsSync(RAW_FILE)) {
+
+    if (!fs.existsSync(RAW_DIR)) {
         return [];
     }
 
-    return JSON.parse(fs.readFileSync(RAW_FILE, "utf8"));
+    const files = fs.readdirSync(RAW_DIR)
+        .filter(f => f.startsWith("raw-data-"))
+        .sort();
+
+    let pages = [];
+
+    for (const file of files) {
+
+        try {
+
+            const data = JSON.parse(
+                fs.readFileSync(
+                    path.join(RAW_DIR, file),
+                    "utf8"
+                )
+            );
+
+            pages.push(...data);
+
+        } catch {
+
+            console.log("❌ Failed:", file);
+
+        }
+
+    }
+
+    return pages;
+
 }
 
 function loadKnowledge() {
