@@ -11,88 +11,170 @@ const SEED_FILE = path.join(__dirname, "seed-urls.json");
 const QUEUE_FILE = path.join(__dirname, "queue.json");
 const VISITED_FILE = path.join(__dirname, "visited.json");
 const RAW_FILE = path.join(__dirname, "raw-data.json");
-function loadQueue() {
-    if (!fs.existsSync(QUEUE_FILE)) return [];
 
+const USER_AGENT = "MastermindXBot/2.0";
+
+function readJSON(file, fallback = []) {
     try {
-        return JSON.parse(fs.readFileSync(QUEUE_FILE, "utf8"));
+        if (!fs.existsSync(file)) return fallback;
+        const txt = fs.readFileSync(file, "utf8").trim();
+        if (!txt) return fallback;
+        return JSON.parse(txt);
     } catch {
-        return [];
+        return fallback;
     }
 }
 
-function saveQueue(queue) {
-    fs.writeFileSync(
-        QUEUE_FILE,
-        JSON.stringify(queue, null, 2),
-        "utf8"
-    );
+function writeJSON(file, data) {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf8");
+}
+
+function loadSeeds() {
+    const seeds = readJSON(SEED_FILE, []);
+
+    const clean = seeds
+        .map(s => {
+            if (typeof s !== "string") return "";
+
+            const md = s.match(/\((https?:\/\/[^)]+)\)/);
+            if (md) return md[1];
+
+            return s.trim();
+        })
+        .filter(s => s.startsWith("http"));
+
+    console.log("🌱 Seeds:", clean.length);
+
+    return clean;
+}
+
+function loadQueue() {
+    return readJSON(QUEUE_FILE, []);
+}
+
+function saveQueue(q) {
+    writeJSON(QUEUE_FILE, q);
 }
 
 function loadVisited() {
-    if (!fs.existsSync(VISITED_FILE)) return [];
-
-    try {
-        return JSON.parse(fs.readFileSync(VISITED_FILE, "utf8"));
-    } catch {
-        return [];
-    }
+    return readJSON(VISITED_FILE, []);
 }
 
-function saveVisited(visited) {
-    fs.writeFileSync(
-        VISITED_FILE,
-        JSON.stringify(visited, null, 2),
-        "utf8"
-    );
+function saveVisited(v) {
+    writeJSON(VISITED_FILE, v);
 }
 
 function loadRaw() {
-    if (!fs.existsSync(RAW_FILE)) return [];
-
-    try {
-        return JSON.parse(fs.readFileSync(RAW_FILE, "utf8"));
-    } catch {
-        return [];
-    }
+    return readJSON(RAW_FILE, []);
 }
 
 function saveRaw(raw) {
-    fs.writeFileSync(
-        RAW_FILE,
-        JSON.stringify(raw, null, 2),
-        "utf8"
-    );
+    writeJSON(RAW_FILE, raw);
 }
-function loadSeeds() {
+
+function normalize(text) {
+    return String(text || "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function pageExists(rawData, url) {
+    return rawData.some(p => p.url === url);
+}
+
+function isValidLink(link) {
+
+    if (!link) return false;
+
+    if (!link.startsWith("http")) return false;
+
+    if (
+        link.includes(".jpg") ||
+        link.includes(".jpeg") ||
+        link.includes(".png") ||
+        link.includes(".gif") ||
+        link.includes(".svg") ||
+        link.includes(".pdf") ||
+        link.includes(".zip") ||
+        link.includes("mailto:") ||
+        link.includes("javascript:")
+    ) {
+        return false;
+    }
+
+    return true;
+}
+async function crawlPage(url) {
+
     try {
-        const text = fs.readFileSync(SEED_FILE, "utf8");
 
-        console.log("📄 File Size:", text.length);
+        console.log("🌍 Crawling:", url);
 
-        const seeds = JSON.parse(text);
+        const { data } = await axios.get(url, {
+            timeout: 10000,
+            headers: {
+                "User-Agent": USER_AGENT
+            }
+        });
 
-        const cleanSeeds = seeds.map(url => {
-        if (typeof url !== "string") return "";
+        const $ = cheerio.load(data);
 
-        const md = url.match(/\((https?:\/\/[^)]+)\)/);
+        const page = {
 
-        if (md) return md[1];
+            url,
 
-        return url.trim();
-        }).filter(url => url.startsWith("http"));
+            title: normalize($("title").text()),
 
-        console.log("✅ Seed URLs Loaded:", cleanSeeds.length);
+            description: normalize(
+                $('meta[name="description"]').attr("content") || ""
+            ),
 
-        return cleanSeeds;
+            body: normalize(
+                $("body").text()
+            )
+
+        };
+
+        const links = [];
+
+        $("a").each((i, el) => {
+
+            let href = $(el).attr("href");
+
+            if (!href) return;
+
+            try {
+
+                href = new URL(href, url).href;
+
+            } catch {
+
+                return;
+
+            }
+
+            href = href.split("#")[0];
+
+            if (isValidLink(href)) {
+
+                links.push(href);
+
+            }
+
+        });
+
+        page.links = [...new Set(links)];
+
+        return page;
 
     } catch (err) {
 
-        console.log("❌ Seed Loader Error");
-        console.log(err.message);
+        console.log("❌ Failed:", url);
 
-        return [];
+        return null;
+
     }
+
 }
 
 async function run() {
@@ -100,56 +182,89 @@ async function run() {
     console.log("🚀 run() started");
 
     const seeds = loadSeeds();
-    
+
     let queue = loadQueue();
+
     let visited = loadVisited();
+
     let rawData = loadRaw();
 
-if (queue.length === 0) {
-    queue = [...seeds];
-    saveQueue(queue);
-}
-    for (const url of seeds) {
-     try {
-    console.log("🌍 Crawling:", url);
+    if (queue.length === 0) {
 
-    const { data } = await axios.get(url, {
-      timeout: 10000,
-      headers: {
-        "User-Agent": "MastermindXBot/1.0"
-      }
-    });
+        queue = [...seeds];
 
-    const $ = cheerio.load(data);
+        saveQueue(queue);
 
-    rawData.push({
-      url,
-      title: $("title").text().trim(),
-      description: $('meta[name="description"]').attr("content") || "",
-      body: $("body").text().replace(/\s+/g, " ").trim()
-    });
-
-  } catch (err) {
-    console.log("❌ Failed:", url);
-  }
-}
-
-fs.writeFileSync(
-  "raw-data.json",
-  JSON.stringify(rawData, null, 2)
-);
-
-console.log("✅ Crawled Pages:", rawData.length);
-    console.log("📄 Total Seeds:", seeds.length);
-
-    if (seeds.length > 0) {
-        console.log("First URL:", seeds[0]);
-        console.log("Type:", typeof seeds[0]);
-        console.log("Raw:", JSON.stringify(seeds[0]));
-        console.log("Last URL:", seeds[seeds.length - 1]);
     }
 
-    console.log("🏁 Test Finished");
+    while (queue.length > 0) {
+
+        const url = queue.shift();
+
+        if (visited.includes(url)) {
+
+            continue;
+
+        }
+
+        visited.push(url);
+
+        saveVisited(visited);
+
+        saveQueue(queue);
+
+        const page = await crawlPage(url);
+
+        if (!page) {
+
+            continue;
+
+        }
+
+        if (!pageExists(rawData, page.url)) {
+
+            rawData.push(page);
+
+            saveRaw(rawData);
+
+            console.log("💾 Saved:", page.url);
+
+        }
+                for (const link of page.links) {
+
+            if (!visited.includes(link) && !queue.includes(link)) {
+
+                queue.push(link);
+
+            }
+
+        }
+
+        saveQueue(queue);
+
+        console.log("📥 Queue:", queue.length);
+        console.log("📚 Visited:", visited.length);
+        console.log("💾 Raw Pages:", rawData.length);
+
+        // Safety limit per run (GitHub Actions timeout se bachne ke liye)
+        if (visited.length % 500 === 0) {
+            console.log("⏸️ Saved progress...");
+            break;
+        }
+
+    }
+
+    console.log("");
+    console.log("======================================");
+    console.log("🎉 Crawl Finished");
+    console.log("🌱 Seeds      :", seeds.length);
+    console.log("📚 Visited    :", visited.length);
+    console.log("📥 Queue Left :", queue.length);
+    console.log("💾 Raw Pages  :", rawData.length);
+    console.log("======================================");
 }
 
-run().catch(console.error);
+run().catch(err => {
+    console.error("💥 Fatal Error");
+    console.error(err);
+});
