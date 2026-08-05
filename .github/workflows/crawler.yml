@@ -35,7 +35,12 @@ jobs:
           git config --global user.name "AjadeshBot"
           git config --global user.email "ajadeshbot@users.noreply.github.com"
 
-          git add raw-data.json index.json knowledge.json
+          git add \
+          database/raw \
+          database/index \
+          queue.json \
+          visited.json \
+          knowledge.json
 
           git diff --cached --quiet || git commit -m "🤖 Mastermind X Bot updated search database"
 
