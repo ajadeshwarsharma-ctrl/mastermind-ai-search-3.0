@@ -265,6 +265,7 @@ async function crawl(url) {
             ),
 
            body: normalize(
+   body: normalize(
     $("body")
         .text()
         .replace(/AKIA[0-9A-Z]{16}/g, "[AWS_ACCESS_KEY]")
@@ -272,6 +273,8 @@ async function crawl(url) {
         .replace(/AIza[0-9A-Za-z\-_]{35}/g, "[GOOGLE_API_KEY]")
         .replace(/ghp_[A-Za-z0-9]{36}/g, "[GITHUB_TOKEN]")
         .replace(/sk-[A-Za-z0-9]{20,}/g, "[OPENAI_KEY]")
+        .replace(/\s+/g, " ")
+        .substring(0, 5000)
 ),
             links: []
 
