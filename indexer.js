@@ -108,6 +108,14 @@ function saveIndex(index) {
 
     const CHUNK_SIZE = 1000;
 
+    const oldFiles = fs.readdirSync(INDEX_DIR);
+
+    for (const f of oldFiles) {
+        if (f.startsWith("index-")) {
+            fs.unlinkSync(path.join(INDEX_DIR, f));
+        }
+    }
+
     let part = 1;
 
     for (let i = 0; i < index.length; i += CHUNK_SIZE) {
