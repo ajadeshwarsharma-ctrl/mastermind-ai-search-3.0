@@ -274,7 +274,6 @@ async function crawl(url) {
                 $('meta[name="description"]').attr("content") || ""
             ),
 
-           body: normalize(
    body: normalize(
     $("body")
         .text()
