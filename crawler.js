@@ -121,13 +121,23 @@ function isValidLink(link) {
         ".mp3",
         ".avi",
         "mailto:",
-        "javascript:"
+        "javascript:",
+
+        // Google Block
+        "google.com",
+        "www.google.com",
+        "google.co.in",
+        "googleusercontent.com",
+        "gstatic.com",
+        "googlesyndication.com",
+        "doubleclick.net",
+        "googleapis.com"
 
     ];
 
     for (const ext of bad) {
 
-        if (link.includes(ext)) {
+        if (link.toLowerCase().includes(ext.toLowerCase())) {
 
             return false;
 
