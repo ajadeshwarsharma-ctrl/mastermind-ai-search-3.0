@@ -106,7 +106,7 @@ function buildIndex(pages) {
 
 function saveIndex(index) {
 
-    const CHUNK_SIZE = 5000;
+    const CHUNK_SIZE = 1000;
 
     let part = 1;
 
