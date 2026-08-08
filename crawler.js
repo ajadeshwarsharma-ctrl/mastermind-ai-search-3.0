@@ -347,7 +347,10 @@ async function run() {
     }
 
     while (queue.length > 0) {
-
+       if (visited.length >= 5000) {
+       console.log("🛑 Crawl limit reached: 5000");
+       break;
+}
         const url = queue.shift();
 
         if (visited.includes(url)) {
