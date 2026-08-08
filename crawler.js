@@ -336,8 +336,26 @@ async function run() {
 
     let queue = loadQueue();
 
+    if (queue.length > 5000) {
+
+    queue = queue.slice(0, 5000);
+
+    saveQueue(queue);
+
+    console.log("🧹 Queue trimmed to 5000");
+
+}
     let visited = loadVisited();
 
+    if (visited.length > 5000) {
+
+    visited = visited.slice(-5000);
+
+    saveVisited(visited);
+
+    console.log("🧹 Visited trimmed to 5000");
+
+}
     if (queue.length === 0) {
 
         queue = [...seeds];
@@ -379,7 +397,7 @@ async function run() {
 
         saveRaw(page);
 
-        for (const link of page.links) {
+        for (const link of page.links.slice(0, 200)) {
 
             if (
                 !visited.includes(link) &&
