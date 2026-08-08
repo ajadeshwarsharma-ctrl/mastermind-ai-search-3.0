@@ -1,16 +1,56 @@
 "use strict";
 
 const fs = require("fs");
-
-const knowledge = JSON.parse(
-    fs.readFileSync("knowledge.json", "utf8")
-);
-
-const index = JSON.parse(
-    fs.readFileSync("index.json", "utf8")
-);
+const path = require("path");
 
 const { rankResults } = require("./ranker");
+
+const KNOWLEDGE_FILE = path.join(__dirname, "knowledge.json");
+const INDEX_DIR = path.join(__dirname, "database", "index");
+
+function loadKnowledge() {
+    try {
+        if (!fs.existsSync(KNOWLEDGE_FILE)) return [];
+
+        return JSON.parse(
+            fs.readFileSync(KNOWLEDGE_FILE, "utf8")
+        );
+    } catch {
+        return [];
+    }
+}
+
+function loadIndex() {
+    if (!fs.existsSync(INDEX_DIR)) return [];
+
+    const files = fs.readdirSync(INDEX_DIR)
+        .filter(file =>
+            /^index-\d+\.json$/.test(file)
+        )
+        .sort();
+
+    let pages = [];
+
+    for (const file of files) {
+        try {
+            const data = JSON.parse(
+                fs.readFileSync(
+                    path.join(INDEX_DIR, file),
+                    "utf8"
+                )
+            );
+
+            if (Array.isArray(data)) {
+                pages.push(...data);
+            }
+
+        } catch {
+            console.log("❌ Failed index:", file);
+        }
+    }
+
+    return pages;
+}
 
 // ===============================
 // MASTERMIND SEARCH ENGINE
@@ -22,46 +62,50 @@ function search(query) {
 
     if (!query) return [];
 
-    const q = query.toLowerCase();
+    const knowledge = loadKnowledge();
+    const index = loadIndex();
 
     // ===========================
-    // OFFICIAL KNOWLEDGE FIRST
+    // OFFICIAL KNOWLEDGE
     // ===========================
+
+    const q = query.toLowerCase();
+
     const official = knowledge.filter(item => {
 
         if (!item.keywords) return false;
 
         return item.keywords.some(keyword =>
-            String(keyword).toLowerCase().includes(q)
+            String(keyword)
+                .toLowerCase()
+                .includes(q)
         );
 
     });
 
-    if (official.length > 0) {
-
-        return official.map(item => ({
-
-            title: item.title,
-
-            url: item.url,
-
-            description: item.description,
-
-            score: 999999,
-
-            source: "knowledge"
-
-        }));
-
-    }
-
     // ===========================
     // NORMAL INDEX SEARCH
     // ===========================
+
     const ranked = rankResults(query, index);
 
-    return ranked.filter(page => page.score > 0);
+    const normal = ranked.filter(
+        page => page.score > 0
+    );
 
+    // Knowledge first, crawler results after it
+    const knowledgeResults = official.map(item => ({
+        title: item.title || "",
+        url: item.url || "",
+        description: item.description || "",
+        score: 999999,
+        source: "knowledge"
+    }));
+
+    return [
+        ...knowledgeResults,
+        ...normal
+    ];
 }
 
 module.exports = {
